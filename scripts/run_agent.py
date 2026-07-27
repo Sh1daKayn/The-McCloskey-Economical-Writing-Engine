@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Lightweight markdown revision runner for the McCloskey Writing Agent.
 
+The script now follows a fuller workflow:
+1. Revise the draft.
+2. Diagnose the writing style and weaknesses.
+3. Deliver a coaching plan for improvement.
+
 Usage:
     python scripts/run_agent.py input.md output.md
 """
@@ -10,7 +15,6 @@ from __future__ import annotations
 import argparse
 import os
 from pathlib import Path
-from typing import Optional
 
 try:
     from openai import OpenAI
@@ -31,7 +35,7 @@ def load_markdown(input_path: Path) -> str:
 
 
 def revise_markdown(system_prompt: str, draft_text: str, model: str = "gpt-4.1-mini") -> str:
-    """Send the draft to the OpenAI API and return the revised markdown."""
+    """Send the draft to the OpenAI API and return the full coaching output."""
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         raise RuntimeError("OPENAI_API_KEY is not set.")
@@ -57,7 +61,7 @@ def revise_markdown(system_prompt: str, draft_text: str, model: str = "gpt-4.1-m
 
 def parse_args() -> argparse.Namespace:
     """Parse CLI arguments."""
-    parser = argparse.ArgumentParser(description="Revise a markdown draft using the McCloskey writing prompt")
+    parser = argparse.ArgumentParser(description="Revise a markdown draft and provide coaching insights")
     parser.add_argument("input", help="Path to the source markdown file")
     parser.add_argument("output", help="Path where the revised markdown will be written")
     parser.add_argument(
@@ -86,7 +90,7 @@ def main() -> None:
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(revised_text + "\n", encoding="utf-8")
-    print(f"Revised markdown written to {output_path}")
+    print(f"Revised markdown and coaching notes written to {output_path}")
 
 
 if __name__ == "__main__":
