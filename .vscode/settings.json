@@ -1,0 +1,13 @@
+{
+  "markdownlint.config": {
+    "default": true,
+    "MD013": false,
+    "MD033": false,
+    "MD036": false
+  },
+  "editor.wordWrap": "on",
+  "files.trimTrailingWhitespace": true,
+  "chat.instructions": [
+    "Whenever reviewing markdown files in this workspace, strictly apply McCloskey's Economical Writing principles (active voice, no hedging, end-weight principle)."
+  ]
+}
